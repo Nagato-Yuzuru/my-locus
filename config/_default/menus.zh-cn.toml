@@ -1,0 +1,14 @@
+[[main]]
+  name    = "文章"
+  pageRef = "posts"
+  weight  = 10
+
+[[main]]
+  name    = "标签"
+  pageRef = "tags"
+  weight  = 20
+
+[[footer]]
+  name    = "标签"
+  pageRef = "tags"
+  weight  = 10
