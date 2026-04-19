@@ -29,7 +29,7 @@ jobs:
       # Single source of truth for toolchain — reads mise.toml
       # Installs: go, hugo-extended, just, uv
       - name: Setup toolchain
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@v4
 
       - name: Validate tags
         run: uv run scripts/validate_tags.py
