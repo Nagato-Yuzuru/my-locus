@@ -1,5 +1,7 @@
 baseURL = "https://blog.yuzuru.me/"
-theme = "blowfish"
+
+# Theme is imported as a Hugo Module — see config/_default/module.toml.
+# Do NOT set `theme = "blowfish"` here; it conflicts with the module import.
 
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
