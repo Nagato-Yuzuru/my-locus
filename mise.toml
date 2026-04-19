@@ -1,0 +1,5 @@
+[tools]
+go = "1.26.2"
+hugo-extended = "0.160.1"
+just = "latest"
+uv = "latest"

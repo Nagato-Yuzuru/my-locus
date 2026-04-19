@@ -1,0 +1,18 @@
+languageCode = "zh-cn"
+languageName = "简体中文"
+weight = 2
+title = "Yuzuru's Locus"
+
+[params]
+displayName = "中文"
+isoCode = "zh-cn"
+dateFormat = "2006-01-02"
+description = "Yuzuru's patch of the internet"
+
+[params.author]
+name = "Nagato Yuzuru"
+email = "nagato@yuzuru.me"
+image = "img/avatar.jpg"
+headline = "A nerd."
+bio = "Fun fact: 🍵 is overrated; ☕ hits different."
+links = [{ github = "https://github.com/Nagato-Yuzuru" }]

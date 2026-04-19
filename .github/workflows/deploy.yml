@@ -1,0 +1,60 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# OIDC permissions: no tokens need to be stored for deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments; allow in-progress builds to finish
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for .GitInfo and lastmod (enableGitInfo)
+
+      # Single source of truth for toolchain — reads mise.toml
+      # Installs: go, hugo-extended, just, uv
+      - name: Setup toolchain
+        uses: jdx/mise-action@v2
+
+      - name: Validate tags
+        run: uv run scripts/validate_tags.py
+        # uv automatically reads PEP 723 metadata to install dependencies
+
+      - name: Build
+        run: hugo --minify
+        # baseURL is defined in config/_default/hugo.toml + static/CNAME
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # Deploy only on push to main (PRs run build as a validation check)
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        # OIDC authorization — no API token or secret required

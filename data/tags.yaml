@@ -1,0 +1,34 @@
+# Enumerated tag registry — SINGLE SOURCE OF TRUTH
+# To add a tag: add it here in a PR first, then use it in posts.
+# Naming convention: lowercase, hyphen-separated (e.g., "web-dev" not "WebDev")
+
+tags:
+  # Technology
+  - programming
+  - python
+  - go
+  - typescript
+  - rust
+  - web-dev
+  - systems
+  - devops
+  - cloud
+  - databases
+  - ai
+  - machine-learning
+
+  # Content types
+  - tutorial
+  - deep-dive
+  - opinion
+  - notes
+  - review
+  - project
+
+  # Topics
+  - productivity
+  - tools
+  - open-source
+  - career
+  - writing
+  - book

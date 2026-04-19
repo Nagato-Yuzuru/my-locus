@@ -1,0 +1,33 @@
+baseURL = "https://blog.yuzuru.me/"
+theme = "blowfish"
+
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+hasCJKLanguage = true
+
+enableRobotsTXT = true
+enableEmoji = true
+enableGitInfo = true
+summaryLength = 30
+buildDrafts = false
+buildFuture = false
+
+[taxonomies]
+tag = "tags"
+
+[pagination]
+pagerSize = 20
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[related]
+threshold = 20
+
+[[related.indices]]
+name = "tags"
+weight = 100
+
+[[related.indices]]
+name = "date"
+weight = 10
