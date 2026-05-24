@@ -49,6 +49,7 @@ content/posts/<slug>/
 | `aliases` | list\[string\] | 旧路径重定向，保留链接不断 |
 | `weight` | int | 手动排序权重（小 → 前，0 表示用 date） |
 | `keywords` | list\[string\] | SEO；也可用于相关文章索引（见 §4） |
+| `series` | list\[string\] | 归入具名系列，自动生成 `/series/<slug>/` 聚合页。自由格式，无白名单。翻译脚本会同步翻译系列名。例：`["Tokio Deep Dive"]` |
 
 ### 1.4 示例
 
