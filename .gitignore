@@ -310,3 +310,8 @@ hugo.linux
 # Temporary lock file while building
 /.hugo_build.lock
 
+# AI tool local config (personal memory, session state)
+/.claude/
+/.agents/
+/skills-lock.json
+
