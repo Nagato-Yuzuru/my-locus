@@ -12,7 +12,7 @@ description = "Yuzuru's patch of the internet"
 [params.author]
 name = "Nagato Yuzuru"
 email = "nagato@yuzuru.me"
-image = "img/avatar.jpg"
+image = "https://github.com/Nagato-Yuzuru.png"
 headline = "A nerd."
 bio = "Fun fact: 🍵 is overrated; ☕ hits different."
 links = [{ github = "https://github.com/Nagato-Yuzuru" }]
