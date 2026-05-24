@@ -38,7 +38,7 @@ content/posts/<slug>/
 | `draft` | bool | `true` 不进生产构建；`just serve` 会带 `-D` 显示草稿 |
 | `publishDate` | datetime | 未来日期在 `buildFuture = false` 下不公开 |
 | `expiryDate` | datetime | 到期后下架 |
-| `lastmod` | datetime | 最后修改时间。`enableGitInfo = true` 默认从 git 取；frontmatter 覆盖 git |
+| `lastmod` | datetime | 最后修改时间。**archetype 不填此字段**，由 `enableGitInfo = true` 从 git commit 自动取。只在需要手动覆盖时才写（如批量 migration） |
 
 ### 1.3 内容/URL
 
