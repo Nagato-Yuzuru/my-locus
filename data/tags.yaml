@@ -1,34 +1,105 @@
-# Enumerated tag registry — SINGLE SOURCE OF TRUTH
-# To add a tag: add it here in a PR first, then use it in posts.
-# Naming convention: lowercase, hyphen-separated (e.g., "web-dev" not "WebDev")
+# Tag registry — SINGLE SOURCE OF TRUTH
+# To add a tag: add an entry here, then run `just tags-sync`.
+# Naming: id is lowercase, hyphen-separated (e.g. "web-dev").
+# Labels: provide at minimum `en` and `zh-cn`.
 
 tags:
-  # Technology
-  - programming
-  - python
-  - go
-  - typescript
-  - rust
-  - web-dev
-  - systems
-  - devops
-  - cloud
-  - databases
-  - ai
-  - machine-learning
+  # ── Language / Ecosystem ──────────────────────────────────
+  - id: python
+    en: Python
+    zh-cn: Python
 
-  # Content types
-  - tutorial
-  - deep-dive
-  - opinion
-  - notes
-  - review
-  - project
+  - id: go
+    en: Go
+    zh-cn: Go
 
-  # Topics
-  - productivity
-  - tools
-  - open-source
-  - career
-  - writing
-  - book
+  - id: typescript
+    en: TypeScript
+    zh-cn: TypeScript
+
+  - id: rust
+    en: Rust
+    zh-cn: Rust
+
+  # ── Domain ───────────────────────────────────────────────
+  - id: programming
+    en: Programming
+    zh-cn: 编程
+
+  - id: web-dev
+    en: Web Dev
+    zh-cn: Web 开发
+
+  - id: systems
+    en: Systems
+    zh-cn: 系统
+
+  - id: devops
+    en: DevOps
+    zh-cn: DevOps
+
+  - id: cloud
+    en: Cloud
+    zh-cn: 云计算
+
+  - id: databases
+    en: Databases
+    zh-cn: 数据库
+
+  - id: ai
+    en: AI / LLM
+    zh-cn: 人工智能
+
+  - id: machine-learning
+    en: Machine Learning
+    zh-cn: 机器学习
+
+  # ── Content type ─────────────────────────────────────────
+  - id: tutorial
+    en: Tutorial
+    zh-cn: 教程
+
+  - id: deep-dive
+    en: Deep Dive
+    zh-cn: 深度解析
+
+  - id: opinion
+    en: Opinion
+    zh-cn: 观点
+
+  - id: notes
+    en: Notes
+    zh-cn: 笔记
+
+  - id: review
+    en: Review
+    zh-cn: 评测
+
+  - id: project
+    en: Project
+    zh-cn: 项目
+
+  # ── Topic ────────────────────────────────────────────────
+  - id: productivity
+    en: Productivity
+    zh-cn: 效率
+
+  - id: tools
+    en: Tools
+    zh-cn: 工具
+
+  - id: open-source
+    en: Open Source
+    zh-cn: 开源
+
+  - id: career
+    en: Career
+    zh-cn: 职业
+
+  - id: writing
+    en: Writing
+    zh-cn: 写作
+
+  - id: book
+    en: Book
+    zh-cn: 书籍
