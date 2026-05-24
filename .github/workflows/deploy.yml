@@ -31,9 +31,27 @@ jobs:
       - name: Setup toolchain
         uses: jdx/mise-action@v4
 
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: resources/_gen
+          key: ${{ runner.os }}-hugo-resources-${{ hashFiles('go.sum') }}
+          restore-keys: ${{ runner.os }}-hugo-resources-
+
       - name: Validate tags
         run: uv run scripts/validate_tags.py
-        # uv automatically reads PEP 723 metadata to install dependencies
+
+      - name: Sync tag pages
+        run: uv run scripts/sync_tags.py
 
       - name: Build
         run: hugo --minify
