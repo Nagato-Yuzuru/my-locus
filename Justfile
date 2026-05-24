@@ -23,14 +23,24 @@ new slug:
 validate:
     uv run scripts/validate_tags.py
 
-# Translate posts to target language (default: zh-cn)
+# List all available tags (id + labels)
+tags:
+    uv run scripts/sync_tags.py --list
 
+# Generate content/tags/<id>/ pages from data/tags.yaml (idempotent)
+tags-sync:
+    uv run scripts/sync_tags.py
+
+# Force-regenerate all tag pages (overwrites existing)
+tags-sync-force:
+    uv run scripts/sync_tags.py --force
+
+# Translate posts to target language (default: zh-cn)
 # Usage: just translate zh-cn | just translate en
 translate lang="zh-cn":
     TARGET_LANG={{ lang }} uv run scripts/translate_posts.py
 
 # Force retranslate (overwrite existing translations)
-
 # Usage: just retranslate zh-cn
 retranslate lang="zh-cn":
     TARGET_LANG={{ lang }} FORCE_RETRANSLATE=true uv run scripts/translate_posts.py
@@ -39,6 +49,6 @@ retranslate lang="zh-cn":
 clean:
     rm -rf public/ resources/_gen/
 
-# Full check: validate tags + production build
-check: validate build
+# Full check: validate tags + sync tag pages + production build
+check: validate tags-sync build
     @echo "✓ All checks passed"

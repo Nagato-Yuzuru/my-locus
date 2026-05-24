@@ -29,7 +29,7 @@ content/posts/<slug>/
 | `title` | string | 文章标题。archetype 会按目录 slug 自动生成（hyphen → 空格、Title Case） |
 | `date` | datetime | 发布时间，用于排序、列表分组（`groupByYear = true`） |
 | `description` | string | meta description + 首页/列表卡片预览文字；**翻译脚本会单独翻译此字段** |
-| `tags` | list\[string\] | 分类维度。**必须全部在 `data/tags.yaml` 白名单内**，否则 CI 挡下 |
+| `tags` | list\[string\] | 分类维度。**必须全部在 `data/tags.yaml` 白名单内**，否则 CI 挡下。用 `just tags` 查看可用列表 |
 
 ### 1.2 发布控制
 
@@ -227,8 +227,9 @@ translate: true
 
 | 规则 | 实施位置 | 违规结果 |
 |---|---|---|
-| `tags` 必须 ⊂ `data/tags.yaml` 的 `tags:` 列表 | `scripts/validate_tags.py`（CI + `just validate`） | CI 失败，列出违规文件 |
+| `tags` 必须 ⊂ `data/tags.yaml` 的 `tags[].id` 列表 | `scripts/validate_tags.py`（CI + `just validate`） | CI 失败，列出违规文件 |
 | `tags` 命名：小写、连字符分隔（`web-dev` 而非 `WebDev`） | 约定（未自动校验） | 人工 review |
+| 新增 tag：先在 `data/tags.yaml` 加条目（含 en/zh-cn），再 `just tags-sync` | `scripts/sync_tags.py` | tag 页面不存在 / CI 校验失败 |
 | `translate` 缺省视为 `true` | `translate_posts.py` 读取时 `fm.get("translate", True)` | 无默认会翻 |
 | frontmatter 解析失败 | `validate_tags.py` 静默跳过；Hugo 构建失败 | 构建报错 |
 
