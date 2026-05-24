@@ -16,6 +16,7 @@ buildFuture = false
 
 [taxonomies]
 tag = "tags"
+series = "series"
 
 [pagination]
 pagerSize = 20
