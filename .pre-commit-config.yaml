@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-tags
+        name: Validate post tags
+        entry: uv run scripts/validate_tags.py --pre-commit
+        language: system
+        pass_filenames: false
+        always_run: true

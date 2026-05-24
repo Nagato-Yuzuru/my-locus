@@ -7,6 +7,10 @@ set shell := ["bash", "-euo", "pipefail", "-c"]
 default:
     @just --list
 
+# First-time setup: install prek hooks
+setup:
+    prek install
+
 # Local development server (with drafts, live reload)
 serve:
     hugo server -D --disableFastRender
