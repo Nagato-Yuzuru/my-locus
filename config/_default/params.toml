@@ -30,6 +30,7 @@ enableCodeCopy       = true
   showTaxonomies      = true
   showRelatedContent  = true
   relatedContentLimit = 3
+  showComments        = true
   showEdit            = true
   editURL             = "https://github.com/Nagato-Yuzuru/my-locus/blob/main/"
   editAppendPath      = true

@@ -1,0 +1,51 @@
+{{/*
+  giscus comments — GitHub Discussions as a comment backend.
+
+  Enabled by default via [article].showComments in params.toml.
+  Opt out per post with `showComments = false` in the front matter.
+
+  Language follows the current page: zh-cn -> zh-CN, anything else -> en.
+  Theme syncs with Blowfish's light/dark toggle.
+*/}}
+{{- $giscusLang := cond (eq .Language.Lang "zh-cn") "zh-CN" "en" -}}
+<script src="https://giscus.app/client.js"
+        data-repo="Nagato-Yuzuru/my-locus"
+        data-repo-id="R_kgDORhcsIQ"
+        data-category="Announcements"
+        data-category-id="DIC_kwDORhcsIc4C6rMi"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="{{ if eq (site.Params.defaultAppearance) "dark" }}dark{{ else }}light{{ end }}"
+        data-lang="{{ $giscusLang }}"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  (function () {
+    function giscusTheme() {
+      return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
+    function sendTheme() {
+      var iframe = document.querySelector("iframe.giscus-frame");
+      if (!iframe) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme() } } },
+        "https://giscus.app"
+      );
+    }
+    // Sync once giscus has loaded.
+    window.addEventListener("message", function (e) {
+      if (e.origin === "https://giscus.app" && e.data && e.data.giscus) sendTheme();
+    });
+    // Sync whenever Blowfish toggles the `dark` class on <html>.
+    new MutationObserver(sendTheme).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  })();
+</script>
