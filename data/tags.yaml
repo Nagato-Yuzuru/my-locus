@@ -38,9 +38,9 @@ tags:
     en: DevOps
     zh-cn: DevOps
 
-  - id: cloud
-    en: Cloud
-    zh-cn: 云计算
+  - id: cloud-native
+    en: Cloud Native
+    zh-cn: 云原生
 
   - id: databases
     en: Databases
