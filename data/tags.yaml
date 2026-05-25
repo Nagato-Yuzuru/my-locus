@@ -50,10 +50,6 @@ tags:
     en: AI / LLM
     zh-cn: 人工智能
 
-  - id: machine-learning
-    en: Machine Learning
-    zh-cn: 机器学习
-
   # ── Content type ─────────────────────────────────────────
   - id: tutorial
     en: Tutorial
