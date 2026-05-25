@@ -1,7 +1,7 @@
 ---
 title: "把基础设施能力变成产品: 用 CRD 让领域专家自助上线"
 date: 2026-05-25T12:16:11+08:00
-draft: true
+draft: false
 description: "从每域名一证书到 DomainRoute——我们如何用一个 CRD 屏蔽 k8s 与非 k8s 后端的差异，让领域专家在网页上自助上线，以及一路踩过的坑。"
 
 # Tags MUST be from data/tags.yaml — CI will reject unknown tags.

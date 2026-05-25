@@ -1,7 +1,7 @@
 ---
 title: "Turning Infrastructure into a Product: Letting Domain Experts Self-Serve with a CRD"
 date: 2026-05-25T12:16:11+08:00
-draft: true
+draft: false
 description: "From one cert per domain to DomainRoute: how we used a single CRD to hide the difference between k8s and non-k8s backends, let domain experts ship from a web page, and every pit we fell into along the way."
 
 # Tags MUST be from data/tags.yaml — CI will reject unknown tags.
