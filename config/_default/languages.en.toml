@@ -13,6 +13,6 @@ description = "Yuzuru's patch of the internet"
 name = "Nagato Yuzuru"
 email = "nagato@yuzuru.me"
 image = "https://github.com/Nagato-Yuzuru.png"
-headline = "A nerd."
+headline = '"He throws everything at the wall." "...And it stuck."'
 bio = "Fun fact: 🍵 is overrated; ☕ hits different."
 links = [{ github = "https://github.com/Nagato-Yuzuru" }]
