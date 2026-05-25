@@ -1,5 +1,5 @@
 # Hugo Blog — common commands
-# Dependencies: just, hugo, uv
+# Toolchain: see mise.toml
 
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
