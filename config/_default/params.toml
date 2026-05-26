@@ -4,6 +4,11 @@ autoSwitchAppearance = true
 enableSearch         = true
 enableCodeCopy       = true
 
+# Cloudflare Web Analytics — cookieless, no consent banner needed.
+# Get the beacon token from CF Dashboard → Web Analytics → (site) → Manual setup.
+# Consumed by layouts/partials/extend-head.html; leave empty to disable.
+cloudflareWebAnalyticsToken = "93e7009166ce48a4ad49131afe11fb07"
+
 [header]
   layout = "fixed"
 
