@@ -1,0 +1,15 @@
+{{/*
+  Cloudflare Web Analytics — cookieless visitor stats.
+
+  No identifying cookies, so no consent banner / privacy policy is required.
+  Token lives in params.toml (cloudflareWebAnalyticsToken); the beacon is only
+  emitted when it's set, so an empty token simply disables analytics.
+
+  Skipped on local builds (hugo serve / IsServer) to avoid polluting stats.
+*/}}
+{{- with site.Params.cloudflareWebAnalyticsToken -}}
+  {{- if not hugo.IsServer -}}
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "{{ . }}"}'></script>
+  {{- end -}}
+{{- end -}}
