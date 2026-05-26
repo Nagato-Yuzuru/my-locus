@@ -14,6 +14,11 @@ summaryLength = 30
 buildDrafts = false
 buildFuture = false
 
+# Google Analytics 4 — Blowfish reads services.googleAnalytics.ID
+[services]
+[services.googleAnalytics]
+ID = "G-L5YMEJP5ZR"
+
 [taxonomies]
 tag = "tags"
 series = "series"
