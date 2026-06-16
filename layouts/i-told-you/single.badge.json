@@ -1,0 +1,9 @@
+{{- $v := .Params.verdict | default "pending" -}}
+{{- $map := dict
+  "pending" (dict "message" "pending" "color" "lightgrey")
+  "correct" (dict "message" "called it ✅" "color" "brightgreen")
+  "wrong"   (dict "message" "wrong ❌" "color" "red")
+  "partial" (dict "message" "partial 🟡" "color" "yellow")
+-}}
+{{- $e := index $map $v | default (index $map "pending") -}}
+{{- dict "schemaVersion" 1 "label" "verdict" "message" $e.message "color" $e.color | jsonify -}}
