@@ -76,3 +76,21 @@ def test_tampered_claim_fails_verification(tmp_path):
     bad = tmp_path / "claim.txt"
     bad.write_bytes((FIX / "claim.txt").read_bytes() + b"tampered")
     assert _verify(bad) != 0
+
+
+import argparse as _ap  # noqa: E402
+
+
+def test_verify_strict_fails_when_proof_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(tt, "SECTION_DIR", tmp_path)
+    b = _make_take(tmp_path)
+    tt.freeze_claim(b, force=False)  # claim.txt but NO proof.tsr
+    with pytest.raises(SystemExit):
+        tt.cmd_verify(_ap.Namespace(strict=True))
+
+
+def test_verify_lenient_passes_when_proof_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(tt, "SECTION_DIR", tmp_path)
+    b = _make_take(tmp_path)
+    tt.freeze_claim(b, force=False)
+    tt.cmd_verify(_ap.Namespace(strict=False))  # must not raise

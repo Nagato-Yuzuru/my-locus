@@ -140,3 +140,56 @@ def stamp(bundle: Path, force: bool) -> None:
 
 def take_bundles() -> list[Path]:
     return sorted({p.parent for p in SECTION_DIR.glob("*/index*.md")})
+
+
+def cmd_stamp(args) -> None:
+    bundles = [Path(args.bundle)] if args.bundle else take_bundles()
+    if not bundles:
+        print("no takes found")
+        return
+    for b in bundles:
+        stamp(b, args.force)
+
+
+def cmd_verify(args) -> None:
+    bundles = take_bundles()
+    failures: list[str] = []
+    for b in bundles:
+        proof, claim = b / "proof.tsr", b / "claim.txt"
+        if not proof.exists() or not claim.exists():
+            if args.strict:
+                failures.append(f"{b.name}: missing proof.tsr/claim.txt (strict)")
+            continue
+        # boundary: aggregate every take's result, then exit non-zero (loud, not swallowed)
+        try:
+            verify_crypto(b)
+            freeze_guard(b)
+        except (SystemExit, subprocess.CalledProcessError, OSError) as e:
+            failures.append(f"{b.name}: {e}")
+    if failures:
+        print("VERIFY FAILED:")
+        for f in failures:
+            print(f"  ✗ {f}")
+        raise SystemExit(1)
+    print(f"✓ verify passed ({len(bundles)} takes)")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    p_stamp = sub.add_parser("stamp", help="freeze + timestamp take(s)")
+    p_stamp.add_argument("bundle", nargs="?", default=None, help="one bundle, or omit for all unstamped")
+    p_stamp.add_argument("--force", action="store_true", help="allow re-freezing a changed claim (unpublished only)")
+    p_stamp.set_defaults(func=cmd_stamp)
+
+    p_verify = sub.add_parser("verify", help="verify all takes")
+    p_verify.add_argument("--lenient", dest="strict", action="store_false", help="allow missing proofs (PR mode)")
+    p_verify.set_defaults(func=cmd_verify, strict=True)
+
+    args = parser.parse_args()
+    args.func(args)
+
+
+if __name__ == "__main__":
+    main()
