@@ -3,8 +3,6 @@ title: "I told you ☝️🤓"
 description: "Dated, timestamp-proven takes on news, business, and tech — scored honestly after the fact, misses included."
 ---
 
-{{< told-you-stats >}}
-
 Calls I make on the record about news, business moves, and technology bets. Each one is cryptographically timestamped the moment it's published, so it can't be quietly backdated — and each is scored later, the wrong ones too.
 
 ## How to verify {#how-to-verify}

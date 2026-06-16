@@ -16,6 +16,9 @@ stance: ""
 # pending | correct | wrong | partial  (edit later with `just verdict <slug> <state>`)
 verdict: "pending"
 
+# Set true to spotlight an exceptional take in the "Featured" box atop /i-told-you/.
+featured: false
+
 # Language whose claim.txt is the timestamped record (en => index.md, zh-cn => index.zh-cn.md).
 claim_lang: "en"
 

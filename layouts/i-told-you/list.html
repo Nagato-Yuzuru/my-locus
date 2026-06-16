@@ -1,0 +1,203 @@
+{{ define "main" }}
+  {{ $pages := where .Site.RegularPages "Section" "i-told-you" }}
+  {{ $oldFirst := sort $pages "Date" }}
+  {{ $newFirst := sort $pages "Date" "desc" }}
+  {{ $featured := sort (where $pages "Params.featured" true) "Date" "desc" }}
+  {{ $correct := len (where $pages "Params.verdict" "correct") }}
+  {{ $wrong := len (where $pages "Params.verdict" "wrong") }}
+  {{ $partial := len (where $pages "Params.verdict" "partial") }}
+  {{ $pending := len (where $pages "Params.verdict" "pending") }}
+  {{ $total := len $pages }}
+  {{ $resolved := add $correct $wrong }}
+  {{ $pct := 0 }}
+  {{ if gt $resolved 0 }}{{ $pct = int (math.Round (div (mul $correct 100.0) $resolved)) }}{{ end }}
+
+  <style>
+    .ity-board{ --ok:#10b981; --bad:#ef4444; --mid:#f59e0b; --idle:#9ca3af;
+      --surface:rgba(0,0,0,.05); --border:rgba(0,0,0,.13); --muted:#6b7280; margin:1.75rem 0; }
+    html.dark .ity-board{ --surface:rgba(255,255,255,.06); --border:rgba(255,255,255,.15); --muted:#9ca3af; }
+    .ity-board [hidden]{ display:none !important; }
+
+    .ity-scoreboard{ display:flex; flex-wrap:wrap; align-items:center; gap:1.75rem; }
+    .ity-ring{ position:relative; width:108px; height:108px; flex:0 0 auto; }
+    .ity-ring__bar{ position:absolute; inset:0; border-radius:50%;
+      background:conic-gradient(var(--ok) calc(var(--pct,0)*1%), var(--bad) 0);
+      -webkit-mask:radial-gradient(farthest-side, transparent 62%, #000 64%);
+              mask:radial-gradient(farthest-side, transparent 62%, #000 64%); }
+    .ity-ring--empty .ity-ring__bar{ background:var(--idle); }
+    .ity-ring__center{ position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; line-height:1.15; text-align:center; }
+    .ity-ring__pct{ font-size:1.6rem; font-weight:800; }
+    .ity-ring__pct--empty{ color:var(--muted); }
+    .ity-ring__sub{ font-size:.74rem; color:var(--muted); display:inline-flex; align-items:center; }
+    .ity-rec{ display:inline-flex; align-items:center; gap:.18rem; font-weight:700; }
+    .ity-rec + .ity-rec{ margin-inline-start:.5rem; }
+    .ity-rec--ok{ color:var(--ok); } .ity-rec--bad{ color:var(--bad); }
+    .ity-rec svg{ width:.95em; height:.95em; }
+
+    .ity-filters{ display:flex; flex-wrap:wrap; gap:.5rem; }
+    .ity-chip{ cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:.4rem;
+      padding:.32rem .75rem; border:1px solid var(--border); border-radius:999px; font:inherit;
+      font-size:.85rem; color:inherit; background:transparent; }
+    .ity-chip::before{ content:""; width:.6rem; height:.6rem; border-radius:50%; background:var(--dot,var(--idle)); }
+    .ity-chip--all::before{ display:none; }
+    .ity-chip--correct{ --dot:var(--ok); } .ity-chip--wrong{ --dot:var(--bad); }
+    .ity-chip--partial{ --dot:var(--mid); } .ity-chip--pending{ --dot:var(--idle); }
+    .ity-chip b{ font-weight:700; }
+    .ity-chip[aria-pressed="true"]{ background:var(--surface); border-color:var(--dot,currentColor); }
+
+    .ity-spotlight{ margin:1.6rem 0 .5rem; }
+    .ity-spotlight__label{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:.5rem; }
+    .ity-spotlight__cards{ display:grid; gap:.75rem; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
+    .ity-card{ display:block; text-decoration:none; color:inherit; border:1px solid var(--border);
+      border-inline-start:4px solid var(--idle); border-radius:.5rem; padding:.8rem 1rem; background:var(--surface); }
+    .ity-card--correct{ border-inline-start-color:var(--ok); } .ity-card--wrong{ border-inline-start-color:var(--bad); }
+    .ity-card--partial{ border-inline-start-color:var(--mid); }
+    .ity-card__top{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--muted); }
+    .ity-card__verdict{ text-transform:uppercase; letter-spacing:.05em; }
+    .ity-card__title{ font-weight:700; margin:.25rem 0; }
+    .ity-card__stance{ font-size:.85rem; color:var(--muted); }
+
+    .ity-grid{ display:flex; flex-wrap:wrap; gap:5px; margin:1.4rem 0 .5rem; }
+    .ity-cell{ width:18px; height:18px; border-radius:4px; background:var(--idle); transition:transform .08s; }
+    .ity-cell--correct{ background:var(--ok); } .ity-cell--wrong{ background:var(--bad); }
+    .ity-cell--partial{ background:var(--mid); } .ity-cell--pending{ background:var(--idle); }
+    .ity-cell:hover{ transform:scale(1.25); }
+
+    .ity-list{ list-style:none; padding:0; margin:1rem 0 0; display:flex; flex-direction:column; }
+    .ity-item{ display:flex; align-items:center; gap:.65rem; padding:.5rem .2rem; border-bottom:1px solid var(--border); }
+    .ity-item__dot{ width:10px; height:10px; border-radius:50%; background:var(--idle); flex:0 0 auto; }
+    .ity-item--correct .ity-item__dot{ background:var(--ok); } .ity-item--wrong .ity-item__dot{ background:var(--bad); }
+    .ity-item--partial .ity-item__dot{ background:var(--mid); }
+    .ity-item__title{ font-weight:600; color:inherit; text-decoration:none; }
+    .ity-item__title:hover{ text-decoration:underline; }
+    .ity-item__meta{ margin-inline-start:auto; font-size:.8rem; color:var(--muted); }
+
+    .ity-pager{ display:flex; flex-wrap:wrap; gap:.35rem; margin-top:1rem; }
+    .ity-page{ min-width:2rem; padding:.25rem .55rem; border:1px solid var(--border); border-radius:.4rem;
+      background:transparent; color:inherit; font:inherit; font-size:.85rem; cursor:pointer; }
+    .ity-page.is-current{ background:var(--surface); font-weight:700; }
+    .ity-page:disabled{ opacity:.4; cursor:default; }
+    .ity-empty{ color:var(--muted); font-style:italic; padding:.8rem .2rem; }
+  </style>
+
+  <header>
+    {{ if .Params.showBreadcrumbs | default (site.Params.list.showBreadcrumbs | default false) }}
+      {{ partial "breadcrumbs.html" . }}
+    {{ end }}
+    <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
+  </header>
+
+  <div class="ity-board" data-perpage="10">
+    <div class="ity-scoreboard">
+      <div class="ity-ring{{ if eq $resolved 0 }} ity-ring--empty{{ end }}" style="--pct: {{ $pct }}"
+           role="img" aria-label="hit rate {{ $pct }} percent">
+        <div class="ity-ring__bar"></div>
+        <div class="ity-ring__center">
+          {{ if gt $resolved 0 }}
+            <span class="ity-ring__pct">{{ $pct }}%</span>
+            <span class="ity-ring__sub">
+              <span class="ity-rec ity-rec--ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>{{ $correct }}</span>
+              <span class="ity-rec ity-rec--bad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>{{ $wrong }}</span>
+            </span>
+          {{ else }}
+            <span class="ity-ring__pct ity-ring__pct--empty">—</span>
+            <span class="ity-ring__sub">no resolved calls yet</span>
+          {{ end }}
+        </div>
+      </div>
+
+      <div class="ity-filters" role="group" aria-label="filter by verdict">
+        <button type="button" class="ity-chip ity-chip--all" data-filter="all" aria-pressed="true">All <b>{{ $total }}</b></button>
+        <button type="button" class="ity-chip ity-chip--correct" data-filter="correct" aria-pressed="false">correct <b>{{ $correct }}</b></button>
+        <button type="button" class="ity-chip ity-chip--wrong" data-filter="wrong" aria-pressed="false">wrong <b>{{ $wrong }}</b></button>
+        <button type="button" class="ity-chip ity-chip--partial" data-filter="partial" aria-pressed="false">partial <b>{{ $partial }}</b></button>
+        <button type="button" class="ity-chip ity-chip--pending" data-filter="pending" aria-pressed="false">pending <b>{{ $pending }}</b></button>
+      </div>
+    </div>
+
+    {{ with $featured }}
+      <div class="ity-spotlight">
+        <div class="ity-spotlight__label">★ Featured</div>
+        <div class="ity-spotlight__cards">
+          {{ range . }}
+            {{ $v := .Params.verdict | default "pending" }}
+            <a class="ity-card ity-card--{{ $v }}" href="{{ .RelPermalink }}">
+              <div class="ity-card__top"><span class="ity-card__verdict">{{ $v }}</span><span class="ity-card__date">{{ .Date.Format "2006-01-02" }}</span></div>
+              <div class="ity-card__title">{{ .Title }}</div>
+              {{ with .Params.stance }}<div class="ity-card__stance">{{ . }}</div>{{ end }}
+            </a>
+          {{ end }}
+        </div>
+      </div>
+    {{ end }}
+
+    {{ if gt $total 0 }}
+      <div class="ity-grid" aria-label="all calls, oldest to newest">
+        {{ range $oldFirst }}
+          {{ $v := .Params.verdict | default "pending" }}
+          <a class="ity-cell ity-cell--{{ $v }}" data-v="{{ $v }}" href="{{ .RelPermalink }}"
+             title="{{ .Title }} · {{ $v }} · {{ .Date.Format `2006-01-02` }}"></a>
+        {{ end }}
+      </div>
+
+      <ul class="ity-list">
+        {{ range $newFirst }}
+          {{ $v := .Params.verdict | default "pending" }}
+          <li class="ity-item ity-item--{{ $v }}" data-v="{{ $v }}">
+            <span class="ity-item__dot"></span>
+            <a class="ity-item__title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <span class="ity-item__meta">{{ .Date.Format "2006-01-02" }} · {{ $v }}</span>
+          </li>
+        {{ end }}
+      </ul>
+      <nav class="ity-pager" aria-label="pagination"></nav>
+    {{ end }}
+  </div>
+
+  <script>
+  (function () {
+    var board = document.querySelector('.ity-board');
+    if (!board) return;
+    var per = parseInt(board.dataset.perpage || '10', 10);
+    var chips = [].slice.call(board.querySelectorAll('.ity-chip'));
+    var cells = [].slice.call(board.querySelectorAll('.ity-cell'));
+    var items = [].slice.call(board.querySelectorAll('.ity-item'));
+    var pager = board.querySelector('.ity-pager');
+    var filter = 'all', page = 1;
+    function ok(el) { return filter === 'all' || el.dataset.v === filter; }
+    function render() {
+      cells.forEach(function (c) { c.hidden = !ok(c); });
+      var vis = items.filter(ok);
+      var pages = Math.max(1, Math.ceil(vis.length / per));
+      if (page > pages) page = pages;
+      items.forEach(function (it) { it.hidden = true; });
+      vis.slice((page - 1) * per, page * per).forEach(function (it) { it.hidden = false; });
+      chips.forEach(function (ch) { ch.setAttribute('aria-pressed', String(ch.dataset.filter === filter)); });
+      pager.innerHTML = '';
+      if (pages > 1) {
+        var add = function (label, p, disabled, current) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.textContent = label;
+          b.className = 'ity-page' + (current ? ' is-current' : '');
+          if (disabled) b.disabled = true;
+          else b.addEventListener('click', function () { page = p; render(); });
+          pager.appendChild(b);
+        };
+        add('‹', page - 1, page <= 1, false);
+        for (var i = 1; i <= pages; i++) add(String(i), i, false, i === page);
+        add('›', page + 1, page >= pages, false);
+      }
+    }
+    chips.forEach(function (ch) {
+      ch.addEventListener('click', function () { filter = ch.dataset.filter; page = 1; render(); });
+    });
+    render();
+  })();
+  </script>
+
+  <section class="mt-10 prose dark:prose-invert max-w-prose">
+    {{ .Content }}
+  </section>
+{{ end }}

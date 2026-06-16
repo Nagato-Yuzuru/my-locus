@@ -14,14 +14,14 @@
   {{- end -}}
 {{- end -}}
 
-{{/* "I told you" claim block + proof line styling */}}
+{{/* "I told you" claim block + proof line styling — theme-adaptive via currentColor */}}
 <style>
-  .told-you-claim { border-left: 4px solid #6366f1; background: rgba(99,102,241,.06);
+  .told-you-claim { border-inline-start: 4px solid color-mix(in srgb, currentColor 35%, transparent);
+    background: color-mix(in srgb, currentColor 5%, transparent);
     padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: .375rem; }
   .told-you-claim__body { font-size: 1.125rem; font-weight: 500; }
-  .told-you-claim__proof { margin-top: .75rem; font-size: .85rem; opacity: .8;
+  .told-you-claim__proof { margin-top: .75rem; font-size: .85rem; opacity: .75;
     display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
   .told-you-badge { height: 20px; display: inline-block; }
   .told-you-proof__pending { font-style: italic; }
-  .told-you-stats { font-size: 1.15rem; margin: 1rem 0 1.5rem; }
 </style>
