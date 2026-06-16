@@ -34,3 +34,9 @@ weight = 100
 [[related.indices]]
 name = "date"
 weight = 10
+
+# Per-take shields endpoint JSON (verdict badge) — see layouts/i-told-you/single.badge.json
+[outputFormats.badge]
+  mediaType   = "application/json"
+  baseName    = "badge"
+  isPlainText = true

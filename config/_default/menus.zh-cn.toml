@@ -4,6 +4,11 @@
   weight  = 10
 
 [[main]]
+  name    = "我早说过 ☝️🤓"
+  pageRef = "i-told-you"
+  weight  = 15
+
+[[main]]
   name    = "标签"
   pageRef = "tags"
   weight  = 20
