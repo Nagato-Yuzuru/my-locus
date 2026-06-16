@@ -25,3 +25,29 @@ def test_extract_claim_returns_inner_text():
 
 def test_extract_claim_none_when_absent():
     assert tt.extract_claim("nothing here") is None
+
+
+import pytest  # noqa: E402
+
+
+def test_freeze_then_guard_passes(tmp_path):
+    b = _make_take(tmp_path)
+    tt.freeze_claim(b, force=False)
+    assert (b / "claim.txt").read_text(encoding="utf-8") == "My call.\n"
+    tt.freeze_guard(b)  # must not raise
+
+
+def test_freeze_guard_detects_visible_edit(tmp_path):
+    b = _make_take(tmp_path)
+    tt.freeze_claim(b, force=False)
+    (b / "index.md").write_text(_frontmatter() + (CLAIM_BLOCK % "DIFFERENT"), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        tt.freeze_guard(b)
+
+
+def test_refreeze_changed_claim_refused(tmp_path):
+    b = _make_take(tmp_path)
+    tt.freeze_claim(b, force=False)
+    (b / "index.md").write_text(_frontmatter() + (CLAIM_BLOCK % "CHANGED"), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        tt.freeze_claim(b, force=False)
