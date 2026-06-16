@@ -1,18 +1,18 @@
 ---
-title: "Example call"
+title: "Why this section exists"
 date: 2026-06-16T12:00:00+08:00
 draft: false
-description: "Seed take used to demonstrate the section."
-series: ["Example saga"]
-tags: ["business", "commentary"]
-stance: "This is a placeholder directional call."
+description: "The first take: a note on why I keep a timestamped, self-scored record of my calls."
+series: ["Meta"]
+tags: ["commentary"]
+stance: "Publicly timestamped, self-scored calls build judgment faster than private hot-takes."
 verdict: "pending"
 claim_lang: "en"
 outputs: ["HTML", "badge"]
 ---
 
 {{< claim >}}
-This is a placeholder judgment that will be frozen and timestamped.
+Keeping a public, cryptographically timestamped record of my calls — and scoring the misses out loud — will sharpen my business and technical judgment more than private opinions ever could.
 {{< /claim >}}
 
-Why I think so: because this is a demonstration take.
+Why I think so: a falsifiable, time-locked claim forces sharper reasoning than a vague take, and a visible track record (wrong calls included) is the only honest way to measure whether the reasoning actually works. I'll revisit this one in a year — same series, new episode.

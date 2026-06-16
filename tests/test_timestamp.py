@@ -94,3 +94,19 @@ def test_verify_lenient_passes_when_proof_missing(tmp_path, monkeypatch):
     b = _make_take(tmp_path)
     tt.freeze_claim(b, force=False)
     tt.cmd_verify(_ap.Namespace(strict=False))  # must not raise
+
+
+import set_verdict as sv  # noqa: E402
+
+
+def test_set_verdict_replaces_only_that_line(tmp_path):
+    md = tmp_path / "index.md"
+    md.write_text(
+        '---\ntitle: x\nstance: "I said verdict: stays in prose"\nverdict: "pending"\n---\nbody verdict: untouched\n',
+        encoding="utf-8",
+    )
+    sv.set_verdict(md, "correct")
+    text = md.read_text(encoding="utf-8")
+    assert 'verdict: "correct"' in text
+    assert "stays in prose" in text           # frontmatter prose untouched
+    assert "body verdict: untouched" in text  # body untouched
