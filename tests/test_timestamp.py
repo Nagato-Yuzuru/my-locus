@@ -51,3 +51,28 @@ def test_refreeze_changed_claim_refused(tmp_path):
     (b / "index.md").write_text(_frontmatter() + (CLAIM_BLOCK % "CHANGED"), encoding="utf-8")
     with pytest.raises(SystemExit):
         tt.freeze_claim(b, force=False)
+
+
+import subprocess as _sp  # noqa: E402
+
+FIX = Path(__file__).resolve().parent / "fixtures"
+CA = "static/tsa/freetsa-cacert.pem"
+TSA = "static/tsa/freetsa-tsa.crt"
+
+
+def _verify(data: Path) -> int:
+    return _sp.run(
+        ["openssl", "ts", "-verify", "-data", str(data),
+         "-in", str(FIX / "proof.tsr"), "-CAfile", CA, "-untrusted", TSA],
+        capture_output=True,
+    ).returncode
+
+
+def test_pristine_fixture_verifies():
+    assert _verify(FIX / "claim.txt") == 0
+
+
+def test_tampered_claim_fails_verification(tmp_path):
+    bad = tmp_path / "claim.txt"
+    bad.write_bytes((FIX / "claim.txt").read_bytes() + b"tampered")
+    assert _verify(bad) != 0

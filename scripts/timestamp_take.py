@@ -94,3 +94,49 @@ def freeze_guard(bundle: Path) -> None:
         raise SystemExit(f"{src}: lost its {{{{< claim >}}}} block")
     if _frozen_bytes(live) != (bundle / "claim.txt").read_bytes():
         raise SystemExit(f"FREEZE GUARD: {src} claim differs from frozen claim.txt")
+
+
+def _run(cmd: list[str]) -> subprocess.CompletedProcess:
+    return subprocess.run(cmd, check=True, capture_output=True, text=True)
+
+
+def verify_crypto(bundle: Path) -> None:
+    """校验 (a)：proof.tsr 对 claim.txt 的 RFC 3161 验证。"""
+    _run([
+        "openssl", "ts", "-verify",
+        "-data", str(bundle / "claim.txt"),
+        "-in", str(bundle / "proof.tsr"),
+        "-CAfile", str(CA_FILE),
+        "-untrusted", str(TSA_CERT),
+    ])
+
+
+def reply_time(proof: Path) -> str:
+    out = _run(["openssl", "ts", "-reply", "-in", str(proof), "-text"]).stdout
+    for line in out.splitlines():
+        if "Time stamp:" in line:
+            return line.split("Time stamp:", 1)[1].strip()
+    return "unknown"
+
+
+def stamp(bundle: Path, force: bool) -> None:
+    claim_file = freeze_claim(bundle, force)
+    proof = bundle / "proof.tsr"
+    if proof.exists():
+        print(f"· {bundle.name}: already stamped")
+        return
+    tsq = bundle / "request.tsq"
+    _run(["openssl", "ts", "-query", "-data", str(claim_file), "-sha256", "-cert", "-out", str(tsq)])
+    req = tsq.read_bytes()
+    http = urllib.request.Request(
+        TSA_URL, data=req, headers={"Content-Type": "application/timestamp-query"}
+    )
+    with urllib.request.urlopen(http, timeout=30) as resp:  # noqa: S310 - fixed TSA URL
+        proof.write_bytes(resp.read())
+    tsq.unlink()
+    verify_crypto(bundle)
+    print(f"✓ {bundle.name}: stamped at {reply_time(proof)}")
+
+
+def take_bundles() -> list[Path]:
+    return sorted({p.parent for p in SECTION_DIR.glob("*/index*.md")})
