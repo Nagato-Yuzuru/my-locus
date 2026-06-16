@@ -1,0 +1,24 @@
+{{- $page := .Page -}}
+{{- $proof := $page.Resources.GetMatch "proof.tsr" -}}
+<div class="told-you-claim">
+  <div class="told-you-claim__body">{{ .Inner | markdownify }}</div>
+  <div class="told-you-claim__proof">
+    {{- if $proof -}}
+      {{- $date := $page.Date.UTC.Format "2006-01-02" -}}
+      <img class="told-you-badge"
+           src="https://img.shields.io/badge/RFC3161-{{ $page.Date.UTC.Format `2006--01--02` }}-blue"
+           alt="RFC 3161 timestamped {{ $date }}" loading="lazy" />
+      {{- with $page.OutputFormats.Get "badge" -}}
+        <img class="told-you-badge"
+             src="https://img.shields.io/endpoint?{{ querify `url` .Permalink }}"
+             alt="verdict" loading="lazy" />
+      {{- end -}}
+      <span class="told-you-proof__text">⏱ RFC 3161 timestamped · {{ $date }} UTC ·
+        <a href="{{ $proof.RelPermalink }}">proof.tsr</a> ·
+        <a href="/i-told-you/#how-to-verify">how to verify ↗</a>
+      </span>
+    {{- else -}}
+      <span class="told-you-proof__text told-you-proof__pending">⏱ timestamp pending (added automatically on publish)</span>
+    {{- end -}}
+  </div>
+</div>
