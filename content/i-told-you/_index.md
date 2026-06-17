@@ -11,7 +11,7 @@ Here's where I put my reads on tech, business, and whatever else I've got an opi
 
 ## How to verify {#how-to-verify}
 
-Each claim is sealed with an RFC 3161 timestamp from freeTSA.org over its exact tex. If I'd quietly edited a call after the fact, the check below fails.
+Each claim is sealed with an RFC 3161 timestamp from freeTSA.org over its exact text. If I'd quietly edited a call after the fact, the check below fails.
 
 Download a take's `claim.<lang>.txt` and `proof.<lang>.tsr`, then run:
 
