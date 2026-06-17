@@ -1,0 +1,9 @@
+{
+  "//": "Deno is used only as the TypeScript type-checker for browser assets (assets/js/**). Run: deno check assets/js/*.ts (or `just typecheck`).",
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "strict": true
+  },
+  "lint": { "include": ["assets/js"] },
+  "fmt": { "include": ["assets/js"] }
+}

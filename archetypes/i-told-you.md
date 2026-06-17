@@ -6,6 +6,7 @@ description: ""
 
 # Group follow-ups on the SAME event under one series (free-form, no whitelist).
 series: []
+# series_order: 1   # which episode this is; controls order + the "Part N" label
 
 # Tags MUST be from data/tags.yaml — CI will reject unknown tags.
 tags: []
@@ -19,16 +20,15 @@ verdict: "pending"
 # Set true to spotlight an exceptional take in the "Featured" box atop /i-told-you/.
 featured: false
 
-# Language whose claim.txt is the timestamped record (en => index.md, zh-cn => index.zh-cn.md).
-claim_lang: "en"
+# THE timestamped commitment. Frozen at first publish (CI stamps it); never edit
+# after — write a new episode instead. Each language is stamped independently.
+claim: |
+  One-line directional judgment goes here.
 
 # Emit badge.json for the shields endpoint badge.
 outputs: ["HTML", "badge"]
 ---
 
 {{< claim >}}
-<!-- One-line directional judgment. Frozen on publish — never edit after.
-     New developments on this event go in a NEW episode (same series), not here. -->
-{{< /claim >}}
 
 Why I think so:

@@ -60,6 +60,9 @@ jobs:
             uv run scripts/timestamp_take.py verify --lenient
           fi
 
+      - name: Type-check browser TS
+        run: deno check assets/js/*.ts
+
       - name: Build
         run: hugo --minify
         # baseURL is defined in config/_default/hugo.toml + static/CNAME
