@@ -1,17 +1,23 @@
 ---
 title: "I told you ☝️🤓"
-description: "Dated, timestamp-proven takes on news, business, and tech — scored honestly after the fact, misses included."
+description: "Hindsight is 20/20, so I call it beforehand and timestamp it."
 ---
 
-Calls I make on the record about news, business moves, and technology bets. Each one is cryptographically timestamped the moment it's published, so it can't be quietly backdated — and each is scored later, the wrong ones too.
+{{< alert icon="quote-left" >}}
+Trust me, I'm an analyst.
+{{< /alert >}}
+
+Here's where I put my reads on tech, business, and whatever else I've got an opinion on, TSA-stamped on the spot so I can't quietly rewrite my bold nonsense once the results are in. Win rate kept too — losses and all.
 
 ## How to verify {#how-to-verify}
 
-Every take freezes its judgment into `claim.txt` and timestamps it with an RFC 3161 token (`proof.tsr`) from freeTSA.org. To confirm a claim existed, unchanged, at its stated time, download a take's `claim.txt` and `proof.tsr` and run:
+Each claim is sealed with an RFC 3161 timestamp from freeTSA.org over its exact tex. If I'd quietly edited a call after the fact, the check below fails.
+
+Download a take's `claim.<lang>.txt` and `proof.<lang>.tsr`, then run:
 
 ```bash
-openssl ts -verify -data claim.txt -in proof.tsr \
+openssl ts -verify -data claim.en.txt -in proof.en.tsr \
   -CAfile freetsa-cacert.pem -untrusted freetsa-tsa.crt
 ```
 
-CA chain: [`freetsa-cacert.pem`](/tsa/freetsa-cacert.pem) · [`freetsa-tsa.crt`](/tsa/freetsa-tsa.crt).
+CA chain: [`freetsa-cacert.pem`](/tsa/freetsa-cacert.pem), [`freetsa-tsa.crt`](/tsa/freetsa-tsa.crt).
