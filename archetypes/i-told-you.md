@@ -24,9 +24,6 @@ featured: false
 # after — write a new episode instead. Each language is stamped independently.
 claim: |
   One-line directional judgment goes here.
-
-# Emit badge.json for the shields endpoint badge.
-outputs: ["HTML", "badge"]
 ---
 
 {{< claim >}}

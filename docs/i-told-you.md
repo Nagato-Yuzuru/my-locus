@@ -29,13 +29,12 @@ content/i-told-you/<slug>/
 | 字段 | 类型 | 可变? | 消费者 | 说明 |
 |---|---|---|---|---|
 | `claim` | string(YAML 块标量 `\|`) | **❌ 冻结** | `timestamp_take.py`(抽取盖章)、`claim` shortcode(展示) | **★ 被盖章的承诺**。一句方向性判断。首次发布时 CI 抽取+盖章后**不可再改**——要修正/更新想法请**开新一集**。每语言各一份、各自盖章。 |
-| `verdict` | enum | ✅ 可变 | 看板、badge.json、verdict pill | `pending` / `correct` / `wrong` / `partial`。事后自评。用 `just verdict` 改;**不碰证明**。 |
+| `verdict` | enum | ✅ 可变 | 看板、verdict pill | `pending` / `correct` / `wrong` / `partial`。事后自评。用 `just verdict` 改;**不碰证明**。 |
 | `stance` | string | ✅ | (速览/未来可展示) | 一句话方向性结论的速记。非盖章对象。 |
 | `series` | list[string] | ✅ | Blowfish series | 系列名(=同一件事的"下一集")。自由格式,无白名单。 |
 | `series_order` | int | ✅ | Blowfish series | 第几集 + 决定系列框里的 "Part N" 标签与排序。**不写则编号空白**。 |
 | `featured` | bool | ✅ | 看板 spotlight | `true` 时进 `/i-told-you/` 顶部"★ Featured"展示框。 |
 | `tags` | list[string] | ✅ | CI 校验 | 必须 ⊂ `data/tags.yaml`(同 posts)。本栏目常用 `commentary` / `business`。 |
-| `outputs` | list[string] | ✅ | Hugo | 固定 `["HTML", "badge"]` —— 额外产出 `badge.json`(shields endpoint,见 §6)。 |
 
 > 已删除的旧字段:`claim_lang`(已改为"每语言独立盖章",不再需要"哪个是权威")。
 
@@ -108,8 +107,6 @@ claim: |
 
 文章页的 `{{< claim >}}` 框:读 `.Params.claim` 渲染 + verdict pill + 该语言自己的 `proof.<lang>.tsr` 链接。
 
-`badge.json`(shields endpoint):每条 take 由 `outputs: ["HTML","badge"]` + `layouts/i-told-you/single.badge.json` 产出,供**对外**嵌入(README/社交)用,随 verdict 变色。站内**不**用它(站内用原生 pill)。
-
 ---
 
 ## 7. 怎么验证一条 claim(任何人都能做)
@@ -166,7 +163,6 @@ CA 链在仓库 `static/tsa/`,线上 [`/tsa/freetsa-cacert.pem`](/tsa/freetsa-ca
 - `archetypes/i-told-you.md` — 新建 take 模板
 - `layouts/shortcodes/claim.html` — claim 框(读 `.Params.claim`)
 - `layouts/i-told-you/list.html` — 看板
-- `layouts/i-told-you/single.badge.json` — shields endpoint
 - `layouts/partials/extend-head-uncached.html` — 按 section 加载 CSS/JS
 - `assets/css/i-told-you.css` / `assets/js/i-told-you.ts` — 看板样式 + 交互
 - `scripts/timestamp_take.py` — 抽取 + 盖章 + 校验

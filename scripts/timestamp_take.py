@@ -163,7 +163,11 @@ def main() -> None:
     p_verify.set_defaults(run=lambda a: cmd_verify(a.strict), strict=True)
 
     args = parser.parse_args()
-    args.run(args)
+    try:
+        args.run(args)
+    except TakeError as e:
+        print(f"error: {e}", file=sys.stderr)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":
