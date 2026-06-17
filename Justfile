@@ -39,16 +39,6 @@ tags-sync:
 tags-sync-force:
     uv run scripts/sync_tags.py --force
 
-# Translate posts to target language (default: zh-cn)
-# Usage: just translate zh-cn | just translate en
-translate lang="zh-cn":
-    TARGET_LANG={{ lang }} uv run scripts/translate_posts.py
-
-# Force retranslate (overwrite existing translations)
-# Usage: just retranslate zh-cn
-retranslate lang="zh-cn":
-    TARGET_LANG={{ lang }} FORCE_RETRANSLATE=true uv run scripts/translate_posts.py
-
 # Clean build artifacts
 clean:
     rm -rf public/ resources/_gen/
