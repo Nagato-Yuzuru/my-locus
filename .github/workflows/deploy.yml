@@ -52,6 +52,17 @@ jobs:
       - name: Sync tag pages
         run: uv run scripts/sync_tags.py
 
+      - name: Verify "I told you" timestamps
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ] && [ "${{ github.event_name }}" = "push" ]; then
+            uv run scripts/timestamp_take.py verify
+          else
+            uv run scripts/timestamp_take.py verify --lenient
+          fi
+
+      - name: Type-check browser TS
+        run: deno check assets/js/*.ts
+
       - name: Build
         run: hugo --minify
         # baseURL is defined in config/_default/hugo.toml + static/CNAME

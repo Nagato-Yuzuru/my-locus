@@ -4,6 +4,8 @@
 
 字段语法：YAML（`---` 包裹）。默认值来源于 `config/_default/params.toml` 的 `[article]` 块，frontmatter 同名字段会覆盖之。
 
+> 「I told you ☝️🤓」栏目有自己特有的元信息(`claim` / `verdict` / `featured` 等)和工作流(盖章、自评、验证)，见 [`i-told-you.md`](./i-told-you.md)。
+
 ---
 
 ## 文件位置约定
@@ -50,6 +52,7 @@ content/posts/<slug>/
 | `weight` | int | 手动排序权重（小 → 前，0 表示用 date） |
 | `keywords` | list\[string\] | SEO；也可用于相关文章索引（见 §4） |
 | `series` | list\[string\] | 归入具名系列，自动生成 `/series/<slug>/` 聚合页。自由格式，无白名单。翻译脚本会同步翻译系列名。例：`["Tokio Deep Dive"]` |
+| `series_order` | int | 配合 `series`：决定系列框内的"Part N"编号与排序。**不写则编号空白、顺序不可控** |
 
 ### 1.4 示例
 

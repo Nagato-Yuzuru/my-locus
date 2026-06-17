@@ -1,0 +1,15 @@
+{{/* Per-page asset loading (uncached → .Section/.Kind are reliable here).
+     "I told you": board+claim CSS on all section pages; board JS only on the
+     section list page. Minified + fingerprinted + SRI via Hugo Pipes. */}}
+{{- if eq .Section "i-told-you" -}}
+  {{- with resources.Get "css/i-told-you.css" -}}
+    {{- $c := . | minify | fingerprint -}}
+    <link rel="stylesheet" href="{{ $c.RelPermalink }}" integrity="{{ $c.Data.Integrity }}">
+  {{- end -}}
+  {{- if eq .Kind "section" -}}
+    {{- with resources.Get "js/i-told-you.ts" -}}
+      {{- $j := . | js.Build (dict "minify" true "target" "es2018") | fingerprint -}}
+      <script defer src="{{ $j.RelPermalink }}" integrity="{{ $j.Data.Integrity }}"></script>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
