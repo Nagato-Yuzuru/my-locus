@@ -1,6 +1,8 @@
 [tools]
+deno = "2.8"
 go = "1.26.2"
 hugo-extended = "0.160.1"
 just = "latest"
 prek = "latest"
 uv = "latest"
+yq = "4"

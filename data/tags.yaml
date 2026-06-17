@@ -50,6 +50,10 @@ tags:
     en: AI / LLM
     zh-cn: 人工智能
 
+  - id: business
+    en: Business
+    zh-cn: 商业
+
   # ── Content type ─────────────────────────────────────────
   - id: tutorial
     en: Tutorial
@@ -62,6 +66,10 @@ tags:
   - id: opinion
     en: Opinion
     zh-cn: 观点
+
+  - id: commentary
+    en: Commentary
+    zh-cn: 评论
 
   - id: notes
     en: Notes
