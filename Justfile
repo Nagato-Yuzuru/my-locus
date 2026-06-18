@@ -32,12 +32,8 @@ tags:
     uv run scripts/sync_tags.py --list
 
 # Generate content/tags/<id>/ pages from data/tags.yaml (idempotent)
-tags-sync:
-    uv run scripts/sync_tags.py
-
-# Force-regenerate all tag pages (overwrites existing)
-tags-sync-force:
-    uv run scripts/sync_tags.py --force
+tags-sync force="false":
+    uv run scripts/sync_tags.py {{ if force == "true" { "--force" } else { "" } }}
 
 # Clean build artifacts
 clean:

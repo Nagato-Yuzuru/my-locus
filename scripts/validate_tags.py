@@ -30,13 +30,10 @@ logger = logging.getLogger("validate_tags")
 TAGS_FILE = "data/tags.yaml"
 CONTENT_DIR = "content"
 
+
 # validate_tags only consumes tag ids; extra keys (en/zh-cn) are ignored.
 class TagEntry(TypedDict):
     id: str
-
-
-class TagRegistry(msgspec.Struct):
-    tags: list[TagEntry]
 
 
 class FrontmatterError(Exception):
@@ -49,7 +46,7 @@ _FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 def load_allowed_tags(path: Path) -> set[str]:
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))
     try:
-        registry = msgspec.convert(raw, TagRegistry)
+        registry = msgspec.convert(raw.get("tags"), list[TagEntry])
     except msgspec.ValidationError as e:
         logger.error("Invalid tag registry %s: %s", path, e)
         raise SystemExit(1) from e
