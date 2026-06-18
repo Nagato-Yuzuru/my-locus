@@ -13,12 +13,12 @@
 ```
 content/posts/<slug>/
 ├── index.md          # 源文（EN，默认内容语言）
-├── index.zh-cn.md    # 翻译（由 scripts/translate_posts.py 生成）
+├── index.zh-cn.md    # 翻译版本（人工翻译）
 ├── feature.jpg       # 可选：自动成为头图/OG image/列表缩略图
 └── <其他资源>        # 图片、附件等 Page Resources，随文章走
 ```
 
-新建用 `just new <slug>`，走 `archetypes/default.md` 模板，会预填 `title` / `date` / `lastmod` / `draft:true` / `translate:true` / 空 `tags:[]` / 空 `description:""`。
+新建用 `just new <slug>`，走 `archetypes/default.md` 模板，会预填 `title` / `date` / `lastmod` / `draft:true` / 空 `tags:[]` / 空 `description:""`。
 
 ---
 
@@ -133,9 +133,7 @@ sharingLinks: false
 
 ## 3. 本项目自定义字段
 
-| 字段 | 类型 | 默认 | 消费者 | 作用 |
-|---|---|---|---|---|
-| `translate` | bool | true | `scripts/translate_posts.py` | `false` 时跳过自动翻译（适合纯中文或纯英文、不打算双语的文章） |
+目前没有项目自定义字段（`translate` 已随自动翻译脚本一并移除，翻译改为人工完成）。
 
 > 扩展自定义字段时，记得在本文件登记；不要放语义不明的 `custom:` 对象。
 
@@ -217,9 +215,6 @@ slug: tokio-runtime
 # —— 主题覆盖（用默认就不写）
 heroStyle: big
 showTableOfContents: true
-
-# —— 本项目自定义
-translate: true
 ---
 
 正文开始……
@@ -234,7 +229,6 @@ translate: true
 | `tags` 必须 ⊂ `data/tags.yaml` 的 `tags[].id` 列表 | `scripts/validate_tags.py`（CI + `just validate`） | CI 失败，列出违规文件 |
 | `tags` 命名：小写、连字符分隔（`web-dev` 而非 `WebDev`） | 约定（未自动校验） | 人工 review |
 | 新增 tag：先在 `data/tags.yaml` 加条目（含 en/zh-cn），再 `just tags-sync` | `scripts/sync_tags.py` | tag 页面不存在 / CI 校验失败 |
-| `translate` 缺省视为 `true` | `translate_posts.py` 读取时 `fm.get("translate", True)` | 无默认会翻 |
 | frontmatter 解析失败 | `validate_tags.py` 静默跳过；Hugo 构建失败 | 构建报错 |
 
 ---
@@ -246,4 +240,3 @@ translate: true
 - `config/_default/hugo.toml` — 相关文章算法配置
 - `data/tags.yaml` — tag 白名单
 - `scripts/validate_tags.py` — tag 校验
-- `scripts/translate_posts.py` — 自动翻译

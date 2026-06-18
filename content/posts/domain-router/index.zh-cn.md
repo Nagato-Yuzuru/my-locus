@@ -10,9 +10,6 @@ tags: ["devops", "cloud-native"]
 # Optional: group post into a named series (free-form, no whitelist).
 # Example: series: ["Tokio Deep Dive"]
 # series: []
-
-# Set to false to skip auto-translation for this post.
-translate: false
 ---
 
 ## 背景与约束：为什么非做不可
