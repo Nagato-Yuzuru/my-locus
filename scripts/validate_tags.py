@@ -50,7 +50,7 @@ def load_allowed_tags(path: Path) -> set[str]:
     except msgspec.ValidationError as e:
         logger.error("Invalid tag registry %s: %s", path, e)
         raise SystemExit(1) from e
-    return {entry["id"] for entry in registry.tags}
+    return {entry["id"] for entry in registry}
 
 
 def post_tags(path: Path) -> list[str]:

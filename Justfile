@@ -60,7 +60,7 @@ verify-told-you:
 
 # Run the Python test suite
 test:
-    uv run --with pytest pytest tests/ -v
+    uv run --with pytest --with msgspec --with pyyaml pytest tests/ -v
 
 # Type-check browser TS assets (esbuild transpiles but does not type-check)
 typecheck:
