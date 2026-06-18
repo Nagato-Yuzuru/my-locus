@@ -32,22 +32,8 @@ tags:
     uv run scripts/sync_tags.py --list
 
 # Generate content/tags/<id>/ pages from data/tags.yaml (idempotent)
-tags-sync:
-    uv run scripts/sync_tags.py
-
-# Force-regenerate all tag pages (overwrites existing)
-tags-sync-force:
-    uv run scripts/sync_tags.py --force
-
-# Translate posts to target language (default: zh-cn)
-# Usage: just translate zh-cn | just translate en
-translate lang="zh-cn":
-    TARGET_LANG={{ lang }} uv run scripts/translate_posts.py
-
-# Force retranslate (overwrite existing translations)
-# Usage: just retranslate zh-cn
-retranslate lang="zh-cn":
-    TARGET_LANG={{ lang }} FORCE_RETRANSLATE=true uv run scripts/translate_posts.py
+tags-sync force="false":
+    uv run scripts/sync_tags.py {{ if force == "true" { "--force" } else { "" } }}
 
 # Clean build artifacts
 clean:
@@ -74,7 +60,7 @@ verify-told-you:
 
 # Run the Python test suite
 test:
-    uv run --with pytest pytest tests/ -v
+    uv run --with pytest --with msgspec --with pyyaml pytest tests/ -v
 
 # Type-check browser TS assets (esbuild transpiles but does not type-check)
 typecheck:

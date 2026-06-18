@@ -10,7 +10,4 @@ tags: []
 # Optional: group post into a named series (free-form, no whitelist).
 # Example: series: ["Tokio Deep Dive"]
 # series: []
-
-# Set to false to skip auto-translation for this post.
-translate: true
 ---

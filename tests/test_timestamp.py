@@ -1,11 +1,7 @@
-import subprocess as sp
-import sys
 from pathlib import Path
 
 import pytest
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-import timestamp_take as tt  # noqa: E402
+import timestamp_take as tt
 
 
 def _take(tmp_path: Path, suffix: str = "", claim: str = "My call.") -> Path:
@@ -40,28 +36,19 @@ def test_extract_claim_missing_field_raises(tmp_path):
         tt.extract_claim(b / "index.md")
 
 
-# --- tamper detection against a committed RFC 3161 fixture ---
+# --- tamper detection against a committed RFC 3161 fixture (via verify_crypto) ---
 FIX = Path(__file__).resolve().parent / "fixtures"
-CA = "static/tsa/freetsa-cacert.pem"
-TSA = "static/tsa/freetsa-tsa.crt"
-
-
-def _verify(data: Path) -> int:
-    return sp.run(
-        ["openssl", "ts", "-verify", "-data", str(data),
-         "-in", str(FIX / "proof.tsr"), "-CAfile", CA, "-untrusted", TSA],
-        capture_output=True,
-    ).returncode
 
 
 def test_pristine_fixture_verifies():
-    assert _verify(FIX / "claim.txt") == 0
+    tt.verify_crypto(FIX / "claim.txt", FIX / "proof.tsr")  # must not raise
 
 
 def test_tampered_claim_fails_verification(tmp_path):
     bad = tmp_path / "claim.txt"
     bad.write_bytes((FIX / "claim.txt").read_bytes() + b"tampered")
-    assert _verify(bad) != 0
+    with pytest.raises(tt.TakeError):
+        tt.verify_crypto(bad, FIX / "proof.tsr")
 
 
 # --- verify modes (strict vs lenient) over a bundle with no proof yet ---
