@@ -31,7 +31,7 @@ jobs:
         uses: jdx/mise-action@v4
 
       - name: Cache Go modules
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/go/pkg/mod
@@ -40,7 +40,7 @@ jobs:
           restore-keys: ${{ runner.os }}-go-
 
       - name: Cache Hugo resources
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: resources/_gen
           key: ${{ runner.os }}-hugo-resources-${{ hashFiles('go.sum') }}
