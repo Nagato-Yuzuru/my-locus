@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup toolchain
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v4.2.3
 
       - name: Stamp new takes
         run: uv run scripts/timestamp_take.py stamp

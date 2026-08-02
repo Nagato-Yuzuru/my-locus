@@ -28,7 +28,7 @@ jobs:
 
       # Single source of truth for toolchain — reads mise.toml
       - name: Setup toolchain
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v4.2.3
 
       - name: Cache Go modules
         uses: actions/cache@v5
