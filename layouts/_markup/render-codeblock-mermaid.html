@@ -1,0 +1,7 @@
+{{/*
+  ```mermaid fenced blocks → Mermaid diagrams, so post bodies stay plain
+  Markdown (renders on GitHub too) instead of depending on a theme shortcode.
+  Flags the page so extend-head-uncached.html loads the Mermaid bundle.
+*/}}
+<pre class="not-prose mermaid">{{ .Inner | htmlEscape | safeHTML }}</pre>
+{{- .Page.Store.Set "hasMermaid" true -}}

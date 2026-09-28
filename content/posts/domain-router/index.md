@@ -32,7 +32,7 @@ We needed a way that's good for everyone, where this annoying stuff gets handled
 
 Before getting into the CRD, let me lay out the current network architecture concretely.
 
-{{< mermaid >}}
+```mermaid
 flowchart TB
 dom["product domain<br>CNAME created by operator"]
 dom -->|"lb=alb-out"| albout["alb-out<br>public ALB"]
@@ -49,7 +49,7 @@ dom -->|"lb=alb-in"| albin["alb-in<br>internal ALB"]
     cert["wildcard cert *.example.com<br>auto-issued + renewed"] -. TLS termination .-> albout
     cert -. TLS termination .-> albin
 
-{{< /mermaid >}}
+```
 
 The shape is simple. Two ALBs, one facing the public internet (alb-out), one internal (alb-in). Behind them sits the same Istio IngressGateway, splitting by Host to each product. Which ALB a product's domain goes through is decided by one field in the CR (`lb`). The operator creates a CNAME for that domain pointing at the corresponding ALB's record.
 
@@ -188,7 +188,7 @@ Gateway protection matters too. In the middle of a product great-leap-forward, h
 
 A typical request goes through the gateway roughly like this:
 
-{{< mermaid >}}
+```mermaid
 sequenceDiagram
 participant C as client
 participant GW as ingress gateway
@@ -202,7 +202,7 @@ participant BE as backend service
     GW->>BE: pass through only on allow
     BE-->>C: response
 
-{{< /mermaid >}}
+```
 
 The caller's identity is decided by the gateway, not something the client can stuff in itself.
 
