@@ -3,9 +3,7 @@ title: "I told you ☝️🤓"
 description: "Hindsight is 20/20, so I call it beforehand and timestamp it."
 ---
 
-{{< alert icon="quote-left" >}}
-Trust me, I'm an analyst.
-{{< /alert >}}
+> Trust me, I'm an analyst.
 
 Here's where I put my reads on tech, business, and whatever else I've got an opinion on, TSA-stamped on the spot so I can't quietly rewrite my bold nonsense once the results are in. Win rate kept too — losses and all.
 

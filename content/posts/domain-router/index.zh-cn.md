@@ -32,7 +32,7 @@ tags: ["devops", "cloud-native"]
 
 在讨论这个 CRD 前，先具体介绍一下当前的网络架构。
 
-{{< mermaid >}}
+```mermaid
 flowchart TB
 dom["产品域名<br>CNAME 由 operator 建"]
 dom -->|"lb=alb-out"| albout["alb-out<br>公网 ALB"]
@@ -49,7 +49,7 @@ dom -->|"lb=alb-in"| albin["alb-in<br>内网 ALB"]
     cert["通配证书 *.example.com<br>自动签发 + 续期"] -. TLS 终止 .-> albout
     cert -. TLS 终止 .-> albin
 
-{{< /mermaid >}}
+```
 
 形状很简单。两个 ALB，一个对公网（alb-out），一个对内网（alb-in）。后面是同一套 Istio IngressGateway，按 Host 分流到各个产品。一个产品域名走哪个 ALB，通过 CR 里的一个字段（`lb`）说了算。Operator 据此给这个域名建一条 CNAME，指向对应 ALB 的记录。
 
@@ -188,7 +188,7 @@ type DomainRouteSpec struct {
 
 一个典型请求在网关里大致是这么走的：
 
-{{< mermaid >}}
+```mermaid
 sequenceDiagram
 participant C as 客户端
 participant GW as Ingress 网关
@@ -202,7 +202,7 @@ participant BE as 后端服务
     GW->>BE: 仅在准入时放行
     BE-->>C: 响应
 
-{{< /mermaid >}}
+```
 
 调用方的身份是网关说了算的，不是客户端能自己塞的。
 

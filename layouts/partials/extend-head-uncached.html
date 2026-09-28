@@ -13,3 +13,16 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{/* Mermaid: render-codeblock-mermaid.html flags the page while rendering its
+     content. The head is emitted before the body, so render .Content first
+     (Hugo caches it) to make the flag visible here. Reuses Blowfish's bundled
+     Mermaid lib + theme-aware config. */}}
+{{- if .IsPage -}}
+  {{- $_ := .Content -}}
+  {{- if .Store.Get "hasMermaid" -}}
+    {{- $js := slice (resources.Get "lib/mermaid/mermaid.min.js") (resources.Get "js/mermaid.js" | minify)
+          | resources.Concat "js/mermaid.bundle.js" | fingerprint -}}
+    <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+  {{- end -}}
+{{- end -}}
